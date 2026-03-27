@@ -1,0 +1,49 @@
+OWAPS- Open Web Application Security Project
+Every 4 years, they release some security measures you can take or some issues most applications have.
+Dependencies
+-Spring web(cos the application is a web application)
+-dev tool(to enable live reload)
+-mySql driver(using sql database to store data)
+-spring security
+
+steps
+Once we have spring security in our dependency, it automatically gives us a login form.
+username = user
+password = The generated password when we start the application on the console.
+Once you login, it saves us the logic of maintaining the session.
+Once you go to localhost:8080/logout, it also logs the user out.
+we can set the username and password in the application.properties.
+
+normally
+when a client sends a request, the controller receives the request and sends a response.
+But with spring security, the client sends a request and spring security intercepts it.
+spring security invokes the servlets (filters that run behind the scenes) and they are a chain of filters.
+so from the filter chain to the front controller(dispatcher servlet) and then to our created controller.
+The response too goes from our controller, through the filter chain and back to the client.
+
+To check the session Id on our chrome browser,
+queryparameter = what you are sending = login details = login
+: at the side of the browser, developer tools, networks tap, cookies, JSESSIONID
+everytime you login, the "JSESSIONID" changes
+if you delete your cookies, you will be loggedout automatically
+
+To change the username and password, go to the application.properties
+spring.security.user.name=
+spring.security.user.password=
+
+CSRF-Cross-Site Request Forgery(another site accessing your session id and using it on your behalf)
+since we are applying security,
+once a client(browser, postman etc) sends a request for the very first time, you have to login
+if you do not login, you wont have access.
+once you login, you receive a sessionID....meaning the client now has an id used to identify them whenever they go to the url.
+By default spring security stops csfr
+by default spring security allows get request when you have a session Id
+but it does not allow post, put, delete
+
+CSRF token
+We need this token when ever we are changing something(PUT, Post, delete)
+how to add CSRF token
+go the the header and add the key = X-CSRF-TOKEN and the value =
+
+
+

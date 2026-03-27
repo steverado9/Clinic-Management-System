@@ -3,6 +3,8 @@ package com.steverado9.Clinic.management.system.controller;
 import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +16,13 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
-    private PasswordEncoder passwordEncoder;
+
+
+//    private PasswordEncoder passwordEncoder;
     private UserService userService;
 
-    public UserController(PasswordEncoder passwordEncoder, UserService userService) {
-        this.passwordEncoder = passwordEncoder;
+    public UserController( UserService userService) {
+//        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
 
@@ -40,11 +44,11 @@ public class UserController {
             return "redirect:/login";
         }
 
-        String existingPassword = existingUser.get().getPassword();
-        if (!passwordEncoder.matches(user.getPassword(), existingPassword)) {
-            System.out.println("Incorrect password");
-            return "redirect:/login";
-        }
+//        String existingPassword = existingUser.get().getPassword();
+//        if (!passwordEncoder.matches(user.getPassword(), existingPassword)) {
+//            System.out.println("Incorrect password");
+//            return "redirect:/login";
+//        }
 
         session.setAttribute("loggedInUser", existingUser);
 
