@@ -1,4 +1,0 @@
-How to use spring security
-1)in your user repository,get user by findByEmail() method
-2)Create CustomUserDetailsService
-3)add SecurityConfig
