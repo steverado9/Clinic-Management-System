@@ -37,7 +37,7 @@ public class SecurityConfig {
         ).formLogin(login -> login
                 .loginPage("/login")
                 .usernameParameter("email")
-                .defaultSuccessUrl("/dashboard", true)
+                .defaultSuccessUrl("/adminDashboard")
                 .permitAll()
         ).logout(logout -> logout.logoutSuccessUrl("/login?logout"));
         return http.build();
