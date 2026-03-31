@@ -22,16 +22,16 @@ public class ClinicManagementSystemApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 
 	@Override
 	public void run(String... args) throws Exception {
 		if (userRepository.findByEmail("isaac.stephen@example.com").isEmpty()) {
-//			String encodedPassword = passwordEncoder.encode("stephen123");
+			String encodedPassword = passwordEncoder.encode("stephen123");
 
-			User user1 = new User("isaac.stephen@example.com", "encodedPassword", Role.ADMIN);
+			User user1 = new User("isaac.stephen@example.com", encodedPassword, Role.ADMIN);
 			userRepository.save(user1);
 			System.out.println("Default admin user created sucessfully");
 		} else {

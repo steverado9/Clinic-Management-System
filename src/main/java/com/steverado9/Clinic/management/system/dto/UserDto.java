@@ -1,14 +1,11 @@
-package com.steverado9.Clinic.management.system.Dto;
+package com.steverado9.Clinic.management.system.dto;
 
 
 import com.steverado9.Clinic.management.system.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-public class userDto {
+public class UserDto {
 
     private Long id;
 
@@ -22,9 +19,9 @@ public class userDto {
     @NotEmpty
     private Role role;
 
-    public userDto() {};
+    public UserDto() {};
 
-    public userDto(String email, String password, Role role) {
+    public UserDto(String email, String password, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;

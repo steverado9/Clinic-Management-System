@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: Clinic-management-system
+  datasource:
+    url: jdbc:mysql://localhost:3306/cms?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: 12345
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+        ddl-auto: create
+  #catch errors
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+server:
+  port: 9090
+
+#logging to see hibernate intended queries
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        orm:
+          jdbc:
+            bind: TRACE
