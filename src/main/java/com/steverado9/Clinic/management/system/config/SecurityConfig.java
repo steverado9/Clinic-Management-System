@@ -30,13 +30,14 @@ public class SecurityConfig {
         return http
                 .csrf(Customizer -> Customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/login", "/register.html").permitAll()
+                        .requestMatchers("/", "/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/receptionist/**").hasRole("RECEPTIONIST")
+                        .requestMatchers("/reception/**").hasRole("RECEPTIONIST")
                         .requestMatchers("/doctor/**").hasRole("DOCTOR")
                         .requestMatchers("/patient/**").hasRole("PATIENT")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
+                        .usernameParameter("email")
                         .loginPage("/login")
                         .successHandler(new CustomSuccessHandler())
                         .permitAll())

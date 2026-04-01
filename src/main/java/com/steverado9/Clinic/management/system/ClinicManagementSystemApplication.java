@@ -32,6 +32,7 @@ public class ClinicManagementSystemApplication implements CommandLineRunner {
 			String encodedPassword = passwordEncoder.encode("stephen123");
 
 			User user1 = new User("isaac.stephen@example.com", encodedPassword, Role.ADMIN);
+			user1.setEnabled(true);
 			userRepository.save(user1);
 			System.out.println("Default admin user created sucessfully");
 		} else {

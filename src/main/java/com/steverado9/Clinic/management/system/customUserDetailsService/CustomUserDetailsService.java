@@ -1,4 +1,4 @@
-package com.steverado9.Clinic.management.system.service;
+package com.steverado9.Clinic.management.system.customUserDetailsService;
 
 import com.steverado9.Clinic.management.system.customUserDetails.CustomUserDetails;
 import com.steverado9.Clinic.management.system.entity.User;

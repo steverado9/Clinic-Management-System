@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Create User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <h2 class="navbar-brand">Clinic Management System</h2>
+        <h2 class="navbar-brand">Create User</h2>
+        <ul class="d-flex list-unstyled" role="search">
+            <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 container justify-content-center card mt-5">
+            <h1 class="text-center">Create User</h1>
+            <div class="card-body">
+                <form class="row g-3 needs-validation" th:action="@{/admin/create_user}" th:object="${userDto}"
+                      method="post" novalidate>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" th:field="*{email}" class="form-control" id="email" required>
+                        <div class="invalid-feedback">
+                            Please provide an email.
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" th:field="*{password}" class="form-control" id="Password" required>
+                        <div class="invalid-feedback">
+                            Please provide a password.
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="roleSelect" class="form-label">Job Role</label>
+                        <Select th:field="*{role}" id="roleSelect" class="form-select" required>
+                            <option value="">Choose...</option>
+                            <option value="DOCTOR">Doctor</option>
+                            <option value="RECEPTIONIST">Receptionist</option>
+                        </Select>
+                        <div class="invalid-feedback">
+                            Please select a job role.
+                        </div>
+                    </div>
+
+                    <!--Doctor fields-->
+                    <div id="doctorFields" style="display:none;">
+                        <div class="col-md-6">
+                            <label for="doctorfullName" class="form-label">FullName</label>
+                            <input type="text" th:field="*{fullName}" class="form-control" id="doctorfullName"
+                                   required/>
+                            <div class="invalid-feedback">
+                                Please provide a fullname.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="specialization" class="form-label">Specialization</label>
+                            <input type="text" name="lastName" th:field="*{specialization}" class="form-control"
+                                   id="specialization" required>
+                            <div class="invalid-feedback">
+                                Please provide a specialization.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Receptionist fields-->
+                    <div id="receptionFields" style="display:none;">
+                        <div class="col-md-6">
+                            <label for="receptionfullName" class="form-label">FullName</label>
+                            <input type="text" th:feld="*{fullName}" class="form-control" id="receptionfullName"
+                                   required/>
+                            <div class="invalid-feedback">
+                                Please provide a fullname.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Create User</button>
+                    </div>
+                </form>
+
+                <div th:if="${param.success}">
+                    <p style="color:green;">User created successfully!</p>
+                </div>
+
+                <div th:if="${param.error}">
+                    <p style="color:red;">Error creating user!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const roleSelect = document.getElementById("roleSelect");
+    const doctorFields = document.getElementById("doctorFields");
+    const receptionFields = document.getElementById("receptionFields");
+
+    roleSelect.addEventListener("change", function () {
+        if (this.value === "DOCTOR") {
+            doctorFields.style.display = "block";
+            receptionFields.style.display = "none";
+
+            // enable doctor fields
+            doctorFields.querySelectorAll("input").forEach(i => i.required = true);
+
+            // disable reception fields
+            receptionFields.querySelectorAll("input").forEach(i => i.required = false);
+
+        } else if (this.value === "RECEPTIONIST") {
+            receptionFields.style.display = "block";
+            doctorFields.style.display = "none";
+
+            // enable reception fields
+            receptionFields.querySelectorAll("input").forEach(i => i.required = true);
+
+            // disable doctor fields
+            doctorFields.querySelectorAll("input").forEach(i => i.required = false);
+        }
+    });
+
+</script>
+
+
+<script>
+    (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+        console.log(">>>", form);
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+</body>
+</html>

@@ -10,9 +10,12 @@
     <div class="row">
         <div class="d-flex align-items-center justify-content-center" style="height: 600px;">
             <form class="needs-validation" th:action="@{/login}" th:object="${user}" method="post" novalidate>
+                <div th:if="${param.error}" class="bg-danger">
+                    Invalid username or password
+                </div>
                 <h6 class="fs-3">Please sign in</h6>
                 <div class="">
-                    <input type="email" name="username" th:field="*{email}" class="form-control form-control-lg" id="email" placeholder="Email address" required>
+                    <input type="email" name="email" th:field="*{email}" class="form-control form-control-lg" id="email" placeholder="Email address" required>
                     <div class="invalid-feedback">
                         Please provide an email.
                     </div>
