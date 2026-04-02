@@ -12,6 +12,7 @@
         <h2 class="navbar-brand">Clinic Management System</h2>
         <h2 class="navbar-brand">Create User</h2>
         <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/admin/dashboard}">Back to dashboard</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
         </ul>
     </div>
@@ -75,7 +76,7 @@
                     <div id="receptionFields" style="display:none;">
                         <div class="col-md-6">
                             <label for="receptionfullName" class="form-label">FullName</label>
-                            <input type="text" th:feld="*{fullName}" class="form-control" id="receptionfullName"
+                            <input type="text" th:field="*{fullName}" class="form-control" id="receptionfullName"
                                    required/>
                             <div class="invalid-feedback">
                                 Please provide a fullname.

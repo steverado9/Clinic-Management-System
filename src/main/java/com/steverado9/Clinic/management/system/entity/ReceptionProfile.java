@@ -9,6 +9,7 @@ public class ReceptionProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String fullName;
 
     @OneToOne

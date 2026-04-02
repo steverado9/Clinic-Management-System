@@ -9,8 +9,10 @@ public class DoctorProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String fullName;
 
+    @Column(nullable = false)
     private String specialization;
 
     @OneToOne

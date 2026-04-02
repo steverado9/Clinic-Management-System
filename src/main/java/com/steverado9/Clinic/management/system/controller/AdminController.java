@@ -82,7 +82,7 @@ public class AdminController {
             receptionProfileRepository.save(reception);
         }
 
-        return "redirect:/admin/dashboard";
+        return "redirect:/admin/create_user?success";
 
     }
 

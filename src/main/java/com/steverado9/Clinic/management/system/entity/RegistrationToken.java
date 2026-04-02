@@ -11,19 +11,21 @@ public class RegistrationToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String token;
 
-    private LocalDateTime expiryDate;
+    @Column(nullable = false)
+    private String email;
 
-    @OneToOne
-    private User user;
+    @Column(nullable = false)
+    private LocalDateTime expiryDate;
 
     public RegistrationToken() {}
 
-    public RegistrationToken(String token, LocalDateTime expiryDate, User user) {
+    public RegistrationToken(String token, LocalDateTime expiryDate, String email) {
         this.token = token;
         this.expiryDate = expiryDate;
-        this.user = user;
+        this.email = email;
     }
 
     public String getToken() {
@@ -42,11 +44,11 @@ public class RegistrationToken {
         this.expiryDate = expiryDate;
     }
 
-    public User getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

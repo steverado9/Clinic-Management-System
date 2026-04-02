@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Patient</title>
+</head>
+<body>
+<form th:action="@{/reception/register_patient}" method="post">
+    <input type="email" name="email" placeholder="Patient Email" required />
+    <button type="submit">Send Registration Link</button>
+</form>
+</body>
+</html>
