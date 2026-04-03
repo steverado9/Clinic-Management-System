@@ -3,15 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Register Here</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<form action="@{/patient/register}" method="post">
-  <input type="hidden" name="token" th:value="${token}" />
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <h2 class="navbar-brand">Clinic Management System</h2>
+        <h2 class="navbar-brand">Patient Registration Form</h2>
+        <ul class="d-flex list-unstyled" role="search">
+            <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 container justify-content-center card mt-5">
+            <h1 class="text-center">Registration Form</h1>
+            <div class="card-body">
+                <form class="row g-3 needs-validation" th:action="@{/patient/register}" method="post" novalidate>
+                    <input type="hidden" name="token" th:value="${token}" />
 
-  <input type="text" name="fullName" placeholder="Full Name" required />
-  <input type="password" name="password" placeholder="Password" required />
+                    <input type="text" name="fullName" placeholder="Full Name" required />
+                    <input type="password" name="password" placeholder="Password" required />
+                    <input type="text" name="phoneNumber" placeholder="Phone number" required />
 
-  <button type="submit">Register</button>
-</form>
+
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

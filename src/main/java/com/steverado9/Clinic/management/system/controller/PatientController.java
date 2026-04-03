@@ -4,6 +4,8 @@ import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import com.steverado9.Clinic.management.system.entity.RegistrationToken;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
+import com.steverado9.Clinic.management.system.service.PatientService;
+import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,10 @@ import java.time.LocalDateTime;
 public class PatientController {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private PatientService patientService;
 
     @Autowired
-    private RegistrationTokenRepository registrationTokenRepository;
+    private RegistrationTokenService registrationTokenService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -36,7 +38,7 @@ public class PatientController {
     @GetMapping("/register")
     public String ShowRegisterationForm(@RequestParam("token") String token, Model model) {
 
-        RegistrationToken regToken = registrationTokenRepository.findByToken(token);
+        RegistrationToken regToken = registrationTokenService.findByToken(token);
 
         if(regToken == null) {
             throw new RuntimeException("Invalid token");
@@ -53,9 +55,9 @@ public class PatientController {
     }
 
     @PostMapping("/register")
-    public String completeRegistration(@RequestParam String token, @RequestParam String fullName, @RequestParam String password) {
+    public String completeRegistration(@RequestParam String token, @RequestParam String fullName, @RequestParam String password, @RequestParam String phoneNumber) {
 
-        RegistrationToken regToken = registrationTokenRepository.findByToken(token);
+        RegistrationToken regToken = registrationTokenService.findByToken(token);
 
         if(regToken == null) {
                 throw new RuntimeException("Invalid token");
@@ -65,9 +67,10 @@ public class PatientController {
         patient.setEmail(regToken.getEmail());
         patient.setFullName(fullName);
         patient.setPassword(passwordEncoder.encode(password));
+        patient.setPhoneNumber(phoneNumber);
         patient.setEnable(true);
 
-        patientRepository.save(patient);
+        patientService.savePatient(patient);
 
         return "redirect:/login";
     }}

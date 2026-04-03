@@ -3,5 +3,5 @@ package com.steverado9.Clinic.management.system.repository;
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DoctorProfileRepository extends JpaRepository<DoctorProfile, Long> {
+public interface DoctorRepository extends JpaRepository<DoctorProfile, Long> {
 }

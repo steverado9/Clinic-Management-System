@@ -5,9 +5,9 @@ import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.ReceptionProfile;
 import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.enums.Role;
-import com.steverado9.Clinic.management.system.repository.DoctorProfileRepository;
-import com.steverado9.Clinic.management.system.repository.ReceptionProfileRepository;
-import com.steverado9.Clinic.management.system.repository.UserRepository;
+import com.steverado9.Clinic.management.system.service.DoctorService;
+import com.steverado9.Clinic.management.system.service.ReceptionService;
+import com.steverado9.Clinic.management.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private DoctorProfileRepository doctorProfileRepository;
+    private DoctorService doctorService;
 
     @Autowired
-    private ReceptionProfileRepository receptionProfileRepository;
+    private ReceptionService receptionService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,7 +47,7 @@ public class AdminController {
     @PostMapping("/create_user")
     public String createUser(@ModelAttribute("userDto") CreateUserDto dto) {
 
-        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+        if (userService.findByEmail(dto.getEmail()).isPresent()) {
             System.out.println("User already exist");
             //catch error in front end
             return "redirect:/admin/create_user?error";
@@ -59,7 +59,7 @@ public class AdminController {
         user.setRole(dto.getRole());
         user.setEnabled(true);
 
-        userRepository.save(user);
+        userService.saveUser(user);
 
         //DoctorProfile
         if (dto.getRole() == Role.DOCTOR) {
@@ -69,7 +69,7 @@ public class AdminController {
             doctor.setFullName(dto.getFullName());
             doctor.setSpecialization(dto.getSpecialization());
 
-            doctorProfileRepository.save(doctor);
+            doctorService.saveDoctor(doctor);
         }
 
         //ReceptionProfile
@@ -79,7 +79,7 @@ public class AdminController {
             reception.setUser(user);
             reception.setFullName(dto.getFullName());
 
-            receptionProfileRepository.save(reception);
+            receptionService.saveReception(reception);
         }
 
         return "redirect:/admin/create_user?success";

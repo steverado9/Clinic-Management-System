@@ -1,8 +1,10 @@
 package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.entity.RegistrationToken;
-import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
+import com.steverado9.Clinic.management.system.repository.PatientRepository;
+import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,13 @@ import java.util.UUID;
 public class ReceptionController {
 
     @Autowired
-    private RegistrationTokenRepository registrationTokenRepository;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private RegistrationTokenService registrationTokenService;
 
     @GetMapping("/dashboard")
     public String dashboard() {
@@ -40,11 +48,12 @@ public class ReceptionController {
         regToken.setEmail(email);
         regToken.setExpiryDate(LocalDateTime.now().plusHours(24));
 
-        registrationTokenRepository.save(regToken);
+        registrationTokenService.saveToken(regToken);
 
         //See the token(send it to email)
         System.out.println("Token: " + token);
 
-        return "redirect:/reception/register_patient?sucess";
+        return "redirect:/reception/register_patient?success";
     }
+
 }

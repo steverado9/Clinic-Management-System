@@ -2,13 +2,11 @@ package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.customUserDetails.CustomUserDetails;
 import com.steverado9.Clinic.management.system.entity.User;
-import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model, Authentication authentication) {
+    public String loginPage(Model model, Authentication authentication, HttpSession session) {
         User user = new User();
         model.addAttribute("user", user);
 
