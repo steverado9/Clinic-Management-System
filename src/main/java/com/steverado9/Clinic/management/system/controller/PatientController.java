@@ -2,8 +2,11 @@ package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import com.steverado9.Clinic.management.system.entity.RegistrationToken;
+import com.steverado9.Clinic.management.system.entity.User;
+import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
+import com.steverado9.Clinic.management.system.repository.UserRepository;
 import com.steverado9.Clinic.management.system.service.PatientService;
 import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PatientService patientService;
@@ -71,6 +77,16 @@ public class PatientController {
         patient.setEnable(true);
 
         patientService.savePatient(patient);
+
+        // 🔥 ALSO CREATE USER FOR LOGIN
+        User user = new User();
+        user.setEmail(regToken.getEmail());
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(Role.PATIENT);
+        user.setEnabled(true);
+
+        userRepository.save(user);
+
 
         return "redirect:/login";
     }}

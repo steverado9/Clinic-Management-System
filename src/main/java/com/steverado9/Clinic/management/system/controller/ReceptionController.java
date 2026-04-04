@@ -2,6 +2,7 @@ package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.entity.RegistrationToken;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
+import com.steverado9.Clinic.management.system.service.EmailService;
 import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/reception")
 public class ReceptionController {
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,6 +56,7 @@ public class ReceptionController {
 
         //See the token(send it to email)
         System.out.println("Token: " + token);
+        emailService.sendRegistrationEmail(email, token);
 
         return "redirect:/reception/register_patient?success";
     }
