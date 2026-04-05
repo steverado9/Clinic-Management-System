@@ -1,9 +1,13 @@
 package com.steverado9.Clinic.management.system.service.Impl;
 
 import com.steverado9.Clinic.management.system.service.EmailService;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailServiceImpl implements EmailService {
 
     private JavaMailSender mailSender;
@@ -15,13 +19,21 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendRegistrationEmail(String toEmail, String token) {
 
-        String link = "http://localhost:9090/patient/register?token=" + token;
+        try {
+            String link = "http://localhost:9090/patient/register?token=" + token;
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("isaacsteverado9@gmail.com");
-        message.setSubject("Complete your registration");
-        message.setText("CLick the link to register:/n" + link);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        mailSender.send(message);
+            helper.setTo(toEmail);
+            helper.setSubject("Complete your registration");
+
+            String htmlContent = "<p>Click the link below to register:</p>" + "<a href=\"" + link + "\">Complete Registration </a>";
+
+            helper.setText(htmlContent, true);
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

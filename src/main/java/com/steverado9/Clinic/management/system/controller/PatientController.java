@@ -9,6 +9,7 @@ import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepos
 import com.steverado9.Clinic.management.system.repository.UserRepository;
 import com.steverado9.Clinic.management.system.service.PatientService;
 import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
+import com.steverado9.Clinic.management.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 public class PatientController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private PatientService patientService;
@@ -85,7 +86,7 @@ public class PatientController {
         user.setRole(Role.PATIENT);
         user.setEnabled(true);
 
-        userRepository.save(user);
+        userService.saveUser(user);
 
 
         return "redirect:/login";
