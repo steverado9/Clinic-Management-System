@@ -1,5 +1,6 @@
 package com.steverado9.Clinic.management.system.controller;
 
+import com.steverado9.Clinic.management.system.entity.Appointment;
 import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import com.steverado9.Clinic.management.system.entity.RegistrationToken;
 import com.steverado9.Clinic.management.system.entity.User;
@@ -7,23 +8,28 @@ import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
 import com.steverado9.Clinic.management.system.repository.UserRepository;
+import com.steverado9.Clinic.management.system.service.AppointmentService;
 import com.steverado9.Clinic.management.system.service.PatientService;
 import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
 import com.steverado9.Clinic.management.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     private UserService userService;
@@ -90,4 +96,25 @@ public class PatientController {
 
 
         return "redirect:/login";
-    }}
+    }
+
+    @GetMapping("/book")
+    public String showBookingForm(Model model) {
+        model.addAttribute("appointment", new Appointment());
+        return "patient/book";
+    }
+
+    @PostMapping("/book")
+    public String bookAppointment(@ModelAttribute Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
+
+        User patient = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+        appointment.setPatient(patient);
+
+        appointmentService.createAppointment(appointment);
+
+        return "redirect:/patient/dashboard";
+
+    }
+}
+
+

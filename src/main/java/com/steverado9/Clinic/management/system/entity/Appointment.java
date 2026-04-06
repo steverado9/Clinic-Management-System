@@ -20,15 +20,15 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    private PatientProfile patient;
+    private User patient;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    private DoctorProfile doctor;
+    private User doctor;
 
     public Appointment() {}
 
-    public Appointment(LocalDateTime appointmentDate, Status status, PatientProfile patient, DoctorProfile doctor) {
+    public Appointment(LocalDateTime appointmentDate, Status status, User patient, User doctor) {
         this.appointmentDate = appointmentDate;
         this.status = status;
         this.patient = patient;
@@ -51,19 +51,19 @@ public class Appointment {
         this.status = status;
     }
 
-    public PatientProfile getPatient() {
+    public User getPatient() {
         return patient;
     }
 
-    public void setPatient(PatientProfile patient) {
+    public void setPatient(User patient) {
         this.patient = patient;
     }
 
-    public DoctorProfile getDoctor() {
+    public User getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(DoctorProfile doctor) {
+    public void setDoctor(User doctor) {
         this.doctor = doctor;
     }
 }

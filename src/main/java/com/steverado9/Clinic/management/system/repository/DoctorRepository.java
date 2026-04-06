@@ -1,7 +1,9 @@
 package com.steverado9.Clinic.management.system.repository;
 
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
+import com.steverado9.Clinic.management.system.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DoctorRepository extends JpaRepository<DoctorProfile, Long> {
+    DoctorProfile findByEmail(User user);
 }

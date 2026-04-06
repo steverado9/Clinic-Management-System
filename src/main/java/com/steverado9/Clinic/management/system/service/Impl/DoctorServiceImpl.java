@@ -1,6 +1,7 @@
 package com.steverado9.Clinic.management.system.service.Impl;
 
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
+import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.repository.DoctorRepository;
 import com.steverado9.Clinic.management.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +16,10 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorProfile saveDoctor(DoctorProfile doctor) {
         return doctorRepository.save(doctor);
+    }
+
+    @Override
+    public DoctorProfile findByUser(User user) {
+        return doctorRepository.findByEmail(user);
     }
 }
