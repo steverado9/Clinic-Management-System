@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <h2 class="navbar-brand">Clinic Management System</h2>
+        <h2 class="navbar-brand">Doctor's Appointment</h2>
+        <ul class="d-flex list-unstyled" role="search">
+            <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<tr th:each ="appointment : ${appointments}">
+    <td th:text="${appointment.patient.email}"></td>
+    <td th:text="${appointment.appointmentDate}"></td>
+    <td th:text="${appointment.status}"></td>
+    <td>
+        <form th:action="@{'/doctor/appointments/' + ${appointment.id} + '/approve'}" method="post">
+            <button type="submit">Approve</button>
+        </form>
+
+        <form th:action="@{'/doctor/appointments/' + ${appointment.id} + '/reject'}" method="post">
+            <button type="submit">Reject</button>
+        </form>
+    </td>
+</tr>
 
 </body>
 </html>

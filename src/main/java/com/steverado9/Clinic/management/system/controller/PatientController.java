@@ -1,17 +1,11 @@
 package com.steverado9.Clinic.management.system.controller;
 
-import com.steverado9.Clinic.management.system.entity.Appointment;
-import com.steverado9.Clinic.management.system.entity.PatientProfile;
-import com.steverado9.Clinic.management.system.entity.RegistrationToken;
-import com.steverado9.Clinic.management.system.entity.User;
+import com.steverado9.Clinic.management.system.entity.*;
 import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
 import com.steverado9.Clinic.management.system.repository.UserRepository;
-import com.steverado9.Clinic.management.system.service.AppointmentService;
-import com.steverado9.Clinic.management.system.service.PatientService;
-import com.steverado9.Clinic.management.system.service.RegistrationTokenService;
-import com.steverado9.Clinic.management.system.service.UserService;
+import com.steverado9.Clinic.management.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +21,9 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
+
+    @Autowired
+    private DoctorService doctorService;
 
     @Autowired
     private AppointmentService appointmentService;
@@ -94,21 +91,28 @@ public class PatientController {
 
         userService.saveUser(user);
 
-
         return "redirect:/login";
     }
 
     @GetMapping("/book")
     public String showBookingForm(Model model) {
         model.addAttribute("appointment", new Appointment());
+        model.addAttribute("doctors", doctorService.getAllDoctors());
         return "patient/book";
     }
 
     @PostMapping("/book")
-    public String bookAppointment(@ModelAttribute Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
+    public String bookAppointment(@ModelAttribute("appointment") Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
 
-        User patient = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        PatientProfile patient = patientService.findByEmail(userDetails.getUsername());
+        DoctorProfile doctor = doctorService.findById(appointment.getDoctor().getId());
+
+        System.out.println("doctor " + doctor);
+
         appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setAppointmentDate(appointment.getAppointmentDate());
 
         appointmentService.createAppointment(appointment);
 

@@ -5,9 +5,11 @@ import com.steverado9.Clinic.management.system.enums.Status;
 import com.steverado9.Clinic.management.system.repository.AppointmentRepository;
 import com.steverado9.Clinic.management.system.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
@@ -15,7 +17,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void createAppointment(Appointment appointment) {
-        appointment.setStatus(Status.PENDING);
         appointmentRepository.save(appointment);
     }
 

@@ -7,6 +7,8 @@ import com.steverado9.Clinic.management.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
@@ -19,7 +21,17 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorProfile findByUser(User user) {
-        return doctorRepository.findByEmail(user);
+    public DoctorProfile findByUserId(Long userId) {
+        return doctorRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<DoctorProfile> getAllDoctors() {
+        return doctorRepository.findAll();
+    }
+
+    @Override
+    public DoctorProfile findById(Long id) {
+        return doctorRepository.findById(id).orElseThrow(() -> new RuntimeException("doctor not found"));
     }
 }

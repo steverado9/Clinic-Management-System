@@ -4,4 +4,6 @@ import com.steverado9.Clinic.management.system.entity.PatientProfile;
 
 public interface PatientService {
     PatientProfile savePatient(PatientProfile patient);
+
+    PatientProfile findByEmail(String email);
 }
