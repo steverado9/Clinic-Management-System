@@ -63,7 +63,13 @@ public class Appointment {
         return doctor;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
     public void setDoctor(DoctorProfile doctor) {
         this.doctor = doctor;
     }
+
 }

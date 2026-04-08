@@ -1,5 +1,6 @@
 package com.steverado9.Clinic.management.system.controller;
 
+import com.steverado9.Clinic.management.system.entity.Appointment;
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.enums.Status;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/doctor")
@@ -38,7 +41,6 @@ public class DoctorController {
     @GetMapping("/appointments")
     public String viewAppointments(Model  model, @AuthenticationPrincipal UserDetails userDetails) {
 
-        System.out.println("email: " + userDetails.getUsername());
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new UsernameNotFoundException("email not found"));
 
         DoctorProfile doctor = doctorService.findByUserId(user.getId());
@@ -51,12 +53,12 @@ public class DoctorController {
     @PostMapping("/appointments/{id}/approve")
     public String approve(@PathVariable Long id) {
         appointmentService.updateStatus(id, Status.APPROVED);
-        return "redirect:/doctor/appointments";
+        return "redirect:/doctor/appointments?success";
     }
 
     @PostMapping("/appointments/{id}/reject")
     public String reject(@PathVariable Long id) {
         appointmentService.updateStatus(id, Status.REJECTED);
-        return "redirect:/doctor/appointments";
+        return "redirect:/doctor/appointments?success";
     }
 }

@@ -2,6 +2,7 @@ package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.entity.*;
 import com.steverado9.Clinic.management.system.enums.Role;
+import com.steverado9.Clinic.management.system.enums.Status;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
 import com.steverado9.Clinic.management.system.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -96,23 +98,32 @@ public class PatientController {
 
     @GetMapping("/book")
     public String showBookingForm(Model model) {
-        model.addAttribute("appointment", new Appointment());
-        model.addAttribute("doctors", doctorService.getAllDoctors());
+
+        Appointment appointment = new Appointment();
+        appointment.setDoctor(new DoctorProfile());
+
+        List<DoctorProfile> doctors = doctorService.getAllDoctors();
+
+        model.addAttribute("appointment", appointment);
+        model.addAttribute("doctors", doctors);
         return "patient/book";
     }
 
     @PostMapping("/book")
-    public String bookAppointment(@ModelAttribute("appointment") Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
+    public String bookAppointment( @RequestParam("doc.id") Long doctorId, @ModelAttribute Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
 
+
+        System.out.println("doctorId " +  doctorId);
+        System.out.println("doctor " + doctorService.findById(doctorId));
 
         PatientProfile patient = patientService.findByEmail(userDetails.getUsername());
-        DoctorProfile doctor = doctorService.findById(appointment.getDoctor().getId());
+        DoctorProfile doctor = doctorService.findById(doctorId);
 
-        System.out.println("doctor " + doctor);
 
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
         appointment.setAppointmentDate(appointment.getAppointmentDate());
+        appointment.setStatus(Status.PENDING);
 
         appointmentService.createAppointment(appointment);
 

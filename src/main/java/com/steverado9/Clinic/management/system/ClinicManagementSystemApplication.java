@@ -29,7 +29,7 @@ public class ClinicManagementSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		if (userRepository.findByEmail("isaac.stephen@example.com").isEmpty()) {
-			String encodedPassword = passwordEncoder.encode("stephen123");
+			String encodedPassword = passwordEncoder.encode("12345");
 
 			User user1 = new User("isaac.stephen@example.com", encodedPassword, Role.ADMIN);
 			user1.setEnabled(true);

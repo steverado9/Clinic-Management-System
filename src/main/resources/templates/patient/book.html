@@ -26,15 +26,17 @@
 
                 <label>Select Doctor</label>
                 <select th:field="*{doctor.id}" required>
-                    <option value="">Choose Doctor</option>
+                    <option value="" disabled>Choose Doctor</option>
                     <option th:each="doc : ${doctors}"
                             th:value="${doc.id}"
-                            th:text="${doc.user.email + ' - ' + doc.specialization}">
+                            th:text="${doc.fullName + ' - ' + doc.specialization}">
                     </option>
-                </select>
+                </select><br>
 
                 <label>Appointment Date</label>
                 <input type="datetime-local" th:field="*{appointmentDate}" required/>
+                <input th:each="doc : ${doctors}" type="hidden" name="doc.id" th:value="${doc.id}"/>
+
 
                 <button type="submit">Submit</button>
             </form>
