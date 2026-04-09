@@ -3,22 +3,18 @@ package com.steverado9.Clinic.management.system.controller;
 import com.steverado9.Clinic.management.system.entity.*;
 import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.enums.Status;
-import com.steverado9.Clinic.management.system.repository.PatientRepository;
-import com.steverado9.Clinic.management.system.repository.RegistrationTokenRepository;
-import com.steverado9.Clinic.management.system.repository.UserRepository;
 import com.steverado9.Clinic.management.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/patient")
@@ -112,7 +108,6 @@ public class PatientController {
     @PostMapping("/book")
     public String bookAppointment( @RequestParam("doc.id") Long doctorId, @ModelAttribute Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
 
-
         System.out.println("doctorId " +  doctorId);
         System.out.println("doctor " + doctorService.findById(doctorId));
 
@@ -128,6 +123,18 @@ public class PatientController {
         appointmentService.createAppointment(appointment);
 
         return "redirect:/patient/dashboard";
+    }
+
+    @GetMapping("/appointments")
+    public String viewAppointments(Model model, Principal principal) {
+
+        String email = principal.getName(); //principal is from spring security, and it is used to get the authenticated username.
+
+        List<Appointment> appointments = appointmentService.getAppointmentsByPatientEmail(email);
+
+        model.addAttribute("appointments", appointments);
+
+        return "patient/appointments";
 
     }
 }

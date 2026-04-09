@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model, Authentication authentication, HttpSession session) {
+    public String loginPage(Model model, Authentication authentication) {
         User user = new User();
         model.addAttribute("user", user);
 

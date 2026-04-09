@@ -11,6 +11,7 @@
         <h2 class="navbar-brand">Clinic Management System</h2>
         <h2 class="navbar-brand">Patient Registration Form</h2>
         <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/login}">Login</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
         </ul>
     </div>
@@ -30,6 +31,13 @@
 
                     <button class="btn btn-primary" type="submit">Register</button>
                 </form>
+                <div th:if="${param.success}">
+                    <p style="color:green;">Registration Link Sent</p>
+                </div>
+
+                <div th:if="${param.error}">
+                    <p style="color:red;">Error creating user!</p>
+                </div>
             </div>
         </div>
     </div>

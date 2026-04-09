@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My Appointments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <h3 class="navbar-brand">Clinic Management System</h3>
+        <h3 class="navbar-brand">My Appointments</h3>
+        <ul class="d-flex list-unstyled" role="search">
+            <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Doctor</th>
+                <th scope="col">Specialization</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="appointment : ${appointments}">
+            <td th:text="${appointment.doctor.fullName}"></td>
+            <td th:text="${appointment.doctor.Specialization}"></td>
+            <td th:text="${#temporals.format(appointment.appointmentDate, 'MMM dd, yyyy hh:mm a')}"></td>
+            <td th:text="${appointment.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,8 +1,10 @@
 package com.steverado9.Clinic.management.system.service.Impl;
 
 import com.steverado9.Clinic.management.system.entity.Appointment;
+import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import com.steverado9.Clinic.management.system.enums.Status;
 import com.steverado9.Clinic.management.system.repository.AppointmentRepository;
+import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.service.AppointmentService;
 import com.steverado9.Clinic.management.system.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import java.util.List;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Autowired
     private EmailService emailService;
@@ -45,5 +50,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         String patientEmail = appointment.getPatient().getEmail();
 
         emailService.sendAppointmentStatusEmail(patientEmail, status, appointment);
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByPatientEmail(String email) {
+
+        PatientProfile patient = patientRepository.findByEmail(email);
+
+        if(patient == null) {
+            throw new RuntimeException("patient not found");
+        }
+
+        return appointmentRepository.findByPatientId(patient.getId());
     }
 }

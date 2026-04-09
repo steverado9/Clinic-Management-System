@@ -14,4 +14,6 @@ public interface AppointmentService {
     List<Appointment> getPatientAppointments(Long patientId);
 
     void updateStatus(Long id, Status status);
+
+    List<Appointment> getAppointmentsByPatientEmail(String email);
 }

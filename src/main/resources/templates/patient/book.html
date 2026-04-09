@@ -40,6 +40,14 @@
 
                 <button type="submit">Submit</button>
             </form>
+
+            <div th:if="${param.success}">
+                <p style="color:green;">Registration Link Sent</p>
+            </div>
+
+            <div th:if="${param.error}">
+                <p style="color:red;">Error creating user!</p>
+            </div>
         </div>
     </div>
 </div>
