@@ -26,6 +26,9 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private DoctorProfile doctor;
 
+    @OneToOne(mappedBy = "appointment")
+    private MedicalReport medicalReport;
+
     public Appointment() {}
 
     public Appointment(LocalDateTime appointmentDate, Status status, PatientProfile patient, DoctorProfile doctor) {
@@ -72,4 +75,11 @@ public class Appointment {
         this.doctor = doctor;
     }
 
+    public MedicalReport getMedicalReport() {
+        return medicalReport;
+    }
+
+    public void setMedicalReport(MedicalReport medicalReport) {
+        this.medicalReport = medicalReport;
+    }
 }

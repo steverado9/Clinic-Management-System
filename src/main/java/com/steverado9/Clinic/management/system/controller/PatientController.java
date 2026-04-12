@@ -96,7 +96,7 @@ public class PatientController {
     public String showBookingForm(Model model) {
 
         Appointment appointment = new Appointment();
-        appointment.setDoctor(new DoctorProfile());
+//        appointment.setDoctor(new DoctorProfile());
 
         List<DoctorProfile> doctors = doctorService.getAllDoctors();
 
@@ -106,23 +106,17 @@ public class PatientController {
     }
 
     @PostMapping("/book")
-    public String bookAppointment( @RequestParam("doc.id") Long doctorId, @ModelAttribute Appointment appointment, @AuthenticationPrincipal UserDetails userDetails) {
-
-        System.out.println("doctorId " +  doctorId);
-        System.out.println("doctor " + doctorService.findById(doctorId));
-
-        PatientProfile patient = patientService.findByEmail(userDetails.getUsername());
-        DoctorProfile doctor = doctorService.findById(doctorId);
-
-
-        appointment.setPatient(patient);
-        appointment.setDoctor(doctor);
-        appointment.setAppointmentDate(appointment.getAppointmentDate());
-        appointment.setStatus(Status.PENDING);
-
-        appointmentService.createAppointment(appointment);
-
-        return "redirect:/patient/dashboard";
+    public String bookAppointment( @RequestParam("doc.id") Long doctorId, @ModelAttribute Appointment appointment,
+                                   @AuthenticationPrincipal UserDetails userDetails, Model model, @RequestParam("time") String time, @RequestParam("date") String date) {
+        try {
+            appointmentService.createAppointment(doctorId, appointment, userDetails, time, date);
+            return "redirect:/patient/appointments?success";
+        } catch (RuntimeException e) {
+            model.addAttribute("appointment", new Appointment());
+            model.addAttribute("doctors", doctorService.getAllDoctors());
+            model.addAttribute("error", e.getMessage());
+            return "patient/book";
+        }
     }
 
     @GetMapping("/appointments")

@@ -15,24 +15,32 @@ public class MedicalReport {
 
     private String diagnosis;
 
+    @Column(length = 2000)
     private String treatmentNotes;
 
-    private LocalDateTime appointmentDate;
+    private LocalDateTime createdAt;
 
     @ManyToOne
+    @JoinColumn(name = "patient_id")
     private PatientProfile patient;
 
     @ManyToOne
+    @JoinColumn(name = "doctor_id")
     private DoctorProfile doctor;
+
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     public MedicalReport() {}
 
-    public MedicalReport(String clinicName, String diagnosis, String treatmentNotes, PatientProfile patient, DoctorProfile doctor) {
+    public MedicalReport(String clinicName, String diagnosis, String treatmentNotes, PatientProfile patient, DoctorProfile doctor, Appointment appointment) {
         this.clinicName = clinicName;
         this.diagnosis = diagnosis;
         this.treatmentNotes = treatmentNotes;
         this.patient = patient;
         this.doctor = doctor;
+        this.appointment = appointment;
     }
 
     public String getClinicName() {
@@ -59,14 +67,6 @@ public class MedicalReport {
         this.treatmentNotes = treatmentNotes;
     }
 
-    public LocalDateTime getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(LocalDateTime appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
     public PatientProfile getPatient() {
         return patient;
     }
@@ -79,7 +79,33 @@ public class MedicalReport {
         return doctor;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
+
     public void setDoctor(DoctorProfile doctor) {
         this.doctor = doctor;
     }
+
+
 }

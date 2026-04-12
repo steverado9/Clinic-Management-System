@@ -12,6 +12,7 @@
         <h2 class="navbar-brand">Clinic Management System</h2>
         <h2 class="navbar-brand">Book An Appointment</h2>
         <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/patient/dashboard}">Dashboard</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
         </ul>
     </div>
@@ -25,6 +26,7 @@
             <form th:action="@{/patient/book}" th:object="${appointment}" method="post">
 
                 <label>Select Doctor</label>
+                <input th:each="doc : ${doctors}" type="hidden" name="doc.id" th:value="${doc.id}"/>
                 <select th:field="*{doctor.id}" required>
                     <option value="" disabled>Choose Doctor</option>
                     <option th:each="doc : ${doctors}"
@@ -33,20 +35,26 @@
                     </option>
                 </select><br>
 
-                <label>Appointment Date</label>
-                <input type="datetime-local" th:field="*{appointmentDate}" required/>
-                <input th:each="doc : ${doctors}" type="hidden" name="doc.id" th:value="${doc.id}"/>
+                <label>Select Date</label>
+                <input type="date" min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" name="date" required/>
 
+                <label>Select Time</label>
+                <select name="time" required>
+                    <option value="">Select Time</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="09:30">09:30 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="10:30">10:30 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                </select>
 
                 <button type="submit">Submit</button>
             </form>
 
-            <div th:if="${param.success}">
-                <p style="color:green;">Registration Link Sent</p>
-            </div>
-
-            <div th:if="${param.error}">
-                <p style="color:red;">Error creating user!</p>
+            <div th:if="${error}">
+                <p style="color:red;" th:text="${error}"></p>
             </div>
         </div>
     </div>

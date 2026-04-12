@@ -1,31 +1,70 @@
 package com.steverado9.Clinic.management.system.service.Impl;
 
 import com.steverado9.Clinic.management.system.entity.Appointment;
+import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import com.steverado9.Clinic.management.system.enums.Status;
 import com.steverado9.Clinic.management.system.repository.AppointmentRepository;
+import com.steverado9.Clinic.management.system.repository.DoctorRepository;
 import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.service.AppointmentService;
+import com.steverado9.Clinic.management.system.service.DoctorService;
 import com.steverado9.Clinic.management.system.service.EmailService;
+import com.steverado9.Clinic.management.system.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private DoctorService doctorService;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     @Autowired
     private EmailService emailService;
 
     @Autowired
-    private AppointmentRepository appointmentRepository;
+    private PatientService patientService;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Override
-    public void createAppointment(Appointment appointment) {
+    public void createAppointment(Long doctorId, Appointment appointment, UserDetails userDetails, String time, String date) {
+
+        LocalDate localDate = LocalDate.parse(date);
+        LocalTime localTime = LocalTime.parse(time);
+        LocalDateTime dateTime = LocalDateTime.of(localDate, localTime);
+        LocalDateTime now = LocalDateTime.now();
+
+        PatientProfile patient = patientService.findByEmail(userDetails.getUsername());
+        DoctorProfile doctor = doctorService.findById(doctorId);
+
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setAppointmentDate(dateTime);
+        appointment.setStatus(Status.PENDING);
+
+        if (dateTime.isBefore(now)) {
+            throw new RuntimeException("You cannot book a past time");
+        }
+
+        if (appointmentRepository.existsByDoctorAndAppointmentDate(doctor, appointment.getAppointmentDate())) {
+            throw new RuntimeException("This time slot is already booked");
+        }
+
         appointmentRepository.save(appointment);
     }
 

@@ -12,6 +12,7 @@
         <h3 class="navbar-brand">Clinic Management System</h3>
         <h3 class="navbar-brand">My Appointments</h3>
         <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/patient/dashboard}">Dashboard</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
         </ul>
     </div>
@@ -33,7 +34,11 @@
             <td th:text="${appointment.doctor.fullName}"></td>
             <td th:text="${appointment.doctor.Specialization}"></td>
             <td th:text="${#temporals.format(appointment.appointmentDate, 'MMM dd, yyyy hh:mm a')}"></td>
-            <td th:text="${appointment.status}"></td>
+            <td>
+                <span class="badge rounded-pill" th:text="${appointment.status}"
+                      th:classappend="${appointment.status == 'APPROVED'} ? 'bg-success' :(${appointment.status == 'REJECTED'} ? 'bg-danger' : 'bg-primary')">
+                </span>
+            </td>
         </tr>
         </tbody>
     </table>
