@@ -28,6 +28,7 @@
             <th scope="col">Status</th>
             <th scope="col">Action</th>
             <th scope="col">Report</th>
+            <th scope="col">Edit Report</th>
         </tr>
     </thead>
     <tbody>
@@ -50,6 +51,12 @@
                 <a th:if="${appointment.status.name() == 'APPROVED' && appointment.medicalReport == null}"
                         th:href="@{/doctor/report/create/{id}(id=${appointment.id})}" type="button" class="btn btn-primary">
                     Create Report
+                </a>
+            </td>
+            <td>
+                <a th:if="${appointment.medicalReport != null}"
+                   th:href="@{/doctor/report/edit/{id}(id=${appointment.medicalReport.id})}" type="button" class="btn btn-primary">
+                    Edit Report
                 </a>
             </td>
         </tr>

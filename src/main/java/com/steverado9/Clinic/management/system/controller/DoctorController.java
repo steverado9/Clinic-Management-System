@@ -110,4 +110,40 @@ public class DoctorController {
 
         return "redirect:/doctor/appointments?success";
     }
+
+    @GetMapping("/report/edit/{reportId}")
+    public String editReport(@PathVariable Long reportId, Model model, Principal principal) {
+
+        MedicalReport report = medicalReportService.findById(reportId);
+
+        String email = principal.getName();
+
+        if (!report.getDoctor().getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        model.addAttribute("report", report);
+
+        return "doctor/edit_report";
+    }
+
+    @PutMapping("/report/edit/{reportId}")
+    public String updateReport(@PathVariable Long reportId, @ModelAttribute MedicalReport updatedReport, Principal principal) {
+
+        MedicalReport existingReport = medicalReportService.findById(reportId);
+
+        String email = principal.getName();
+
+        if (!existingReport.getDoctor().getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        existingReport.setClinicName(updatedReport.getClinicName());
+        existingReport.setDiagnosis(updatedReport.getDiagnosis());
+        existingReport.setTreatmentNotes(updatedReport.getTreatmentNotes());
+
+        medicalReportService.saveReport(existingReport);
+
+        return "redirect:/doctor/appointments?updated";
+    }
 }

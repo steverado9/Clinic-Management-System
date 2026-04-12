@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Medical report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <h2 class="navbar-brand">Clinic Management System</h2>
+        <h2 class="navbar-brand">Update Medical report</h2>
+        <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/doctor/dashboard}">Back to
+                dashboard</a></li>
+            <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-sm-6">
+            <div class="card">
+                <h5 class="card-header text-center"> Patient medical report</h5>
+                <div class="card-body">
+                    <form th:action="@{/doctor/report/edit/{id}(id=${report.id})}" th:object="${report}" th:method="post">
+                        <input type="hidden" name="_method" value="put"/>
+
+                        <p class="card-text">Patient: <b th:text="${report.patient.fullName}"></b></p>
+                        <p class="card-text">Appointment Date: <b th:text="${#temporals.format(report.appointment.appointmentDate, 'MMM dd, yyyy hh:mm a')}"></b></p>
+
+                        <div class="mb-3">
+                            <label for="clinicName" class="form-label">Clinic Name</label>
+                            <input type="text" class="form-control" th:field="*{clinicName}" id="clinicName" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="diagnosis" class="form-label">Diagnosis</label>
+                            <input type="text" class="form-control" th:field="*{diagnosis}" id="diagnosis" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="treatmentNotes" class="form-label">Treatment Notes</label>
+                            <textarea class="form-control" id="treatmentNotes" th:field="*{treatmentNotes}" rows="3"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" type="submit">Update Report</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

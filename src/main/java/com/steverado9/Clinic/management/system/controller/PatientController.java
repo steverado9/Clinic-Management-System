@@ -21,13 +21,13 @@ import java.util.List;
 public class PatientController {
 
     @Autowired
-    private DoctorService doctorService;
-
-    @Autowired
     private AppointmentService appointmentService;
 
     @Autowired
-    private UserService userService;
+    private DoctorService doctorService;
+
+    @Autowired
+    private MedicalReportService medicalReportService;
 
     @Autowired
     private PatientService patientService;
@@ -37,6 +37,9 @@ public class PatientController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/dashboard")
     public String dashboard() {
@@ -96,8 +99,6 @@ public class PatientController {
     public String showBookingForm(Model model) {
 
         Appointment appointment = new Appointment();
-//        appointment.setDoctor(new DoctorProfile());
-
         List<DoctorProfile> doctors = doctorService.getAllDoctors();
 
         model.addAttribute("appointment", appointment);
@@ -129,7 +130,20 @@ public class PatientController {
         model.addAttribute("appointments", appointments);
 
         return "patient/appointments";
+    }
 
+    @GetMapping("/reports")
+    public String viewReports(Model model, Principal principal) {
+
+        String email = principal.getName();
+
+        PatientProfile patient = patientService.findByEmail(email);
+
+        List<MedicalReport> reports = medicalReportService.findByPatient(patient);
+
+        model.addAttribute("reports", reports);
+
+        return "patient/reports";
     }
 }
 

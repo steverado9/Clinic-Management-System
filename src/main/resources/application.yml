@@ -10,7 +10,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
-        ddl-auto: create
+        ddl-auto: update
   mail:
     host: smtp.gmail.com
     port: 587
@@ -26,6 +26,9 @@ spring:
   #catch errors
   mvc:
     throw-exception-if-no-handler-found: true
+    hiddenmethod:
+      filter:
+        enabled: true
   web:
     resources:
       add-mappings: false
