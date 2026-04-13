@@ -12,6 +12,7 @@
         <h3 class="navbar-brand">Clinic Management System</h3>
         <h3 class="navbar-brand">Doctor's Appointments</h3>
         <ul class="d-flex list-unstyled" role="search">
+            <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/doctor/dashboard}">Back to dashboard</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
         </ul>
     </div>
@@ -26,11 +27,12 @@
             <th scope="col">Appointment Date</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
+            <th scope="col">Report</th>
         </tr>
     </thead>
     <tbody>
         <tr th:each ="appointment : ${appointments}">
-            <td th:text="${appointment.patient.email}"></td>
+            <td th:text="${appointment.patient.fullName}"></td>
             <td th:text="${#temporals.format(appointment.appointmentDate, 'MMM dd, yyyy hh:mm a')}"></td>
             <td th:text="${appointment.status}"></td>
             <td>
@@ -43,6 +45,12 @@
                         <button type="submit" class="btn btn-danger">Reject</button>
                     </form>
                 </div>
+            </td>
+            <td>
+                <a th:if="${appointment.status.name() == 'APPROVED' && appointment.medicalReport == null}"
+                        th:href="@{/doctor/report/create/{id}(id=${appointment.id})}" type="button" class="btn btn-primary">
+                    Create Report
+                </a>
             </td>
         </tr>
     </tbody>

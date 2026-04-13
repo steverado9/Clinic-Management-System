@@ -102,4 +102,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointmentRepository.findByPatientId(patient.getId());
     }
+
+    @Override
+    public Appointment findById(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found"));
+    }
 }

@@ -34,4 +34,9 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorProfile findById(Long id) {
         return doctorRepository.findById(id).orElseThrow(() -> new RuntimeException("doctor not found"));
     }
+
+    @Override
+    public DoctorProfile findByUserEmail(String email) {
+        return doctorRepository.findByUserEmail(email);
+    }
 }

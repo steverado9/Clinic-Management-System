@@ -31,11 +31,12 @@ public class Appointment {
 
     public Appointment() {}
 
-    public Appointment(LocalDateTime appointmentDate, Status status, PatientProfile patient, DoctorProfile doctor) {
+    public Appointment(LocalDateTime appointmentDate, Status status, PatientProfile patient, DoctorProfile doctor, MedicalReport medicalReport) {
         this.appointmentDate = appointmentDate;
         this.status = status;
         this.patient = patient;
         this.doctor = doctor;
+        this.medicalReport = medicalReport;
     }
 
     public LocalDateTime getAppointmentDate() {

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MedicalReportRespository extends JpaRepository<MedicalReport, Long> {
 
-    List<MedicalReport> findPatient(PatientProfile patient);
-
-    List<MedicalReport> findByDoctor(DoctorProfile doctor);
+//    List<MedicalReport> findPatient(PatientProfile patient);
+//
+//    List<MedicalReport> findByDoctor(DoctorProfile doctor);
 }

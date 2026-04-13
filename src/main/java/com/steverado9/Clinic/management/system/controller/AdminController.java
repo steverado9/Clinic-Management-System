@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -47,8 +49,9 @@ public class AdminController {
     @PostMapping("/create_user")
     public String createUser(@ModelAttribute("userDto") CreateUserDto dto) {
 
-        if (userService.findByEmail(dto.getEmail()).isPresent()) {
-            System.out.println("User already exist");
+        Optional<User> existingUser = userService.findByEmail(dto.getEmail());
+
+        if (existingUser.isPresent()) {
             //catch error in front end
             return "redirect:/admin/create_user?error";
         }

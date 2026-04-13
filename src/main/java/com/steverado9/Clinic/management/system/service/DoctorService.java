@@ -14,4 +14,6 @@ public interface DoctorService {
     List<DoctorProfile> getAllDoctors();
 
     DoctorProfile findById(Long id);
+
+    DoctorProfile findByUserEmail(String email);
 }
