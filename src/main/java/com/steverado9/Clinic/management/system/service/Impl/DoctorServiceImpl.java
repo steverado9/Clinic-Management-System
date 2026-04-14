@@ -2,7 +2,9 @@ package com.steverado9.Clinic.management.system.service.Impl;
 
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.User;
+import com.steverado9.Clinic.management.system.repository.AppointmentRepository;
 import com.steverado9.Clinic.management.system.repository.DoctorRepository;
+import com.steverado9.Clinic.management.system.service.AppointmentService;
 import com.steverado9.Clinic.management.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Autowired
     private DoctorRepository doctorRepository;
@@ -39,4 +44,11 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorProfile findByUserEmail(String email) {
         return doctorRepository.findByUserEmail(email);
     }
+
+    @Override
+    public void deleteByDoctorId(Long id) {
+        appointmentRepository.deleteByDoctorId(id);
+        doctorRepository.deleteById(id);
+    }
+
 }

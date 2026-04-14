@@ -107,4 +107,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment findById(Long appointmentId) {
         return appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found"));
     }
+
+    @Override
+    public void deleteByDoctorId(Long doctorId) {
+
+    }
 }

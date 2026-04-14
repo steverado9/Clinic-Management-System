@@ -16,4 +16,6 @@ public interface DoctorService {
     DoctorProfile findById(Long id);
 
     DoctorProfile findByUserEmail(String email);
+
+    void deleteByDoctorId(Long id);
 }

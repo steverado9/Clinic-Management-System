@@ -1,10 +1,12 @@
 package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.dto.CreateUserDto;
+import com.steverado9.Clinic.management.system.entity.Appointment;
 import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.ReceptionProfile;
 import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.enums.Role;
+import com.steverado9.Clinic.management.system.service.AppointmentService;
 import com.steverado9.Clinic.management.system.service.DoctorService;
 import com.steverado9.Clinic.management.system.service.ReceptionService;
 import com.steverado9.Clinic.management.system.service.UserService;
@@ -12,16 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     @Autowired
     private UserService userService;
@@ -37,7 +40,7 @@ public class AdminController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "admin/dashboard";
+        return "/dashboard";
     }
 
     @GetMapping("/create_user")
@@ -88,5 +91,33 @@ public class AdminController {
         return "redirect:/admin/create_user?success";
 
     }
+
+    @GetMapping("/doctors")
+    public String getAllDoctors(Model model) {
+        List<DoctorProfile> doctors = doctorService.getAllDoctors();
+
+        model.addAttribute("doctors", doctors);
+        return "admin/doctors";
+    }
+
+    @DeleteMapping("doctors/delete/{id}")
+    public String deleteDoctor(@PathVariable Long id) {
+        doctorService.deleteByDoctorId(id);
+        return "redirect:/admin/doctors";
+    }
+
+    @GetMapping("/doctors/{id}/appointments")
+    public String getDoctorAppointments(@PathVariable("id") Long doctorId, Model model) {
+        DoctorProfile doctor = doctorService.findById(doctorId);
+        List<Appointment> appointments = appointmentService.getDoctorAppointments(doctorId);
+
+        model.addAttribute("doctor", doctor);
+        model.addAttribute("appointments", appointments);
+        return "admin/doctor_appointments";
+    }
+
+
+
+
 
 }

@@ -30,7 +30,7 @@ public class SecurityConfig {
         return http
                 .csrf(Customizer -> Customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/login", "/patient/register/**", "/test.css").permitAll()
+                        .requestMatchers("/", "/login", "/patient/register/**", "/images/**", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/reception/**").hasRole("RECEPTIONIST")
                         .requestMatchers("/doctor/**").hasRole("DOCTOR")

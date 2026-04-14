@@ -20,4 +20,6 @@ public interface AppointmentService {
     List<Appointment> getAppointmentsByPatientEmail(String email);
 
     Appointment findById(Long appointmentId);
+
+    void deleteByDoctorId(Long doctorId);
 }
