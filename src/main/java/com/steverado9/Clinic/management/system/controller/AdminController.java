@@ -1,15 +1,9 @@
 package com.steverado9.Clinic.management.system.controller;
 
 import com.steverado9.Clinic.management.system.dto.CreateUserDto;
-import com.steverado9.Clinic.management.system.entity.Appointment;
-import com.steverado9.Clinic.management.system.entity.DoctorProfile;
-import com.steverado9.Clinic.management.system.entity.ReceptionProfile;
-import com.steverado9.Clinic.management.system.entity.User;
+import com.steverado9.Clinic.management.system.entity.*;
 import com.steverado9.Clinic.management.system.enums.Role;
-import com.steverado9.Clinic.management.system.service.AppointmentService;
-import com.steverado9.Clinic.management.system.service.DoctorService;
-import com.steverado9.Clinic.management.system.service.ReceptionService;
-import com.steverado9.Clinic.management.system.service.UserService;
+import com.steverado9.Clinic.management.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,7 +18,13 @@ import java.util.Optional;
 public class AdminController {
 
     @Autowired
+    private MedicalReportService medicalReportService;
+
+    @Autowired
     private AppointmentService appointmentService;
+
+    @Autowired
+    private PatientService patientService;
 
     @Autowired
     private UserService userService;
@@ -92,6 +92,7 @@ public class AdminController {
 
     }
 
+    //Doctors
     @GetMapping("/doctors")
     public String getAllDoctors(Model model) {
         List<DoctorProfile> doctors = doctorService.getAllDoctors();
@@ -116,8 +117,45 @@ public class AdminController {
         return "admin/doctor_appointments";
     }
 
+    //Receptionists
+    @GetMapping("/receptionist")
+    public String getAllReception(Model model) {
+        List<ReceptionProfile> receptions = receptionService.getAllReceptions();
 
+        model.addAttribute("receptions", receptions);
+        return "admin/receptions";
+    }
 
+    @DeleteMapping("receptionist/delete/{id}")
+    public String deleteReceptionist(@PathVariable Long id) {
+        receptionService.deleteByReceptionId(id);
+        return "redirect:/admin/receptionist";
+    }
+
+    //Patients
+    @GetMapping("/patients")
+    public String getPatients(Model model) {
+        List<PatientProfile> patients = patientService.getAllPatients();
+
+        model.addAttribute("patients", patients);
+        return "admin/patients";
+    }
+
+    @GetMapping("/patients/{id}/reports")
+    public String getPatientReports(@PathVariable("id") Long patientId, Model model) {
+        PatientProfile patient = patientService.findById(patientId);
+        List<MedicalReport> reports = medicalReportService.getMedicalReportByPatientId(patientId);
+
+        model.addAttribute("patient", patient);
+        model.addAttribute("reports", reports);
+        return "admin/records";
+    }
+
+    @DeleteMapping("patients/delete/{id}")
+    public String deletePatient(@PathVariable Long id) {
+        patientService.deleteByPatientId(id);
+        return "redirect:/admin/dasnboard";
+    }
 
 
 }

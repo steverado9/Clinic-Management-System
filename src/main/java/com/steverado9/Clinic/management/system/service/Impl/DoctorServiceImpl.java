@@ -4,10 +4,12 @@ import com.steverado9.Clinic.management.system.entity.DoctorProfile;
 import com.steverado9.Clinic.management.system.entity.User;
 import com.steverado9.Clinic.management.system.repository.AppointmentRepository;
 import com.steverado9.Clinic.management.system.repository.DoctorRepository;
+import com.steverado9.Clinic.management.system.repository.MedicalReportRespository;
 import com.steverado9.Clinic.management.system.service.AppointmentService;
 import com.steverado9.Clinic.management.system.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private MedicalReportRespository medicalReportRespository;
 
     @Override
     public DoctorProfile saveDoctor(DoctorProfile doctor) {
@@ -45,9 +50,9 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.findByUserEmail(email);
     }
 
+    @Transactional
     @Override
     public void deleteByDoctorId(Long id) {
-        appointmentRepository.deleteByDoctorId(id);
         doctorRepository.deleteById(id);
     }
 

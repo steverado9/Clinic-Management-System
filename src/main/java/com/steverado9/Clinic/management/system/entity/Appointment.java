@@ -26,7 +26,7 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private DoctorProfile doctor;
 
-    @OneToOne(mappedBy = "appointment")
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
     private MedicalReport medicalReport;
 
     public Appointment() {}
@@ -37,6 +37,13 @@ public class Appointment {
         this.patient = patient;
         this.doctor = doctor;
         this.medicalReport = medicalReport;
+    }
+
+    public void removeMedicalReport() {
+        if (this.medicalReport != null) {
+            this.medicalReport.setAppointment(null);
+            this.medicalReport = null;
+        }
     }
 
     public LocalDateTime getAppointmentDate() {

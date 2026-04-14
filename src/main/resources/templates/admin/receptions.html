@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Doctors</title>
+    <title>Create User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -17,7 +17,7 @@
 <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
     <div class="container-fluid">
         <h2 class="navbar-brand">Clinic Management System</h2>
-        <h2 class="navbar-brand">List Of Doctors</h2>
+        <h2 class="navbar-brand">List Of Receptionist</h2>
         <ul class="d-flex list-unstyled" role="search">
             <li class="me-4"><a class="text-white text-decoration-none" th:href="@{/admin/dashboard}">Back to dashboard</a></li>
             <li class=""><a class="text-white text-decoration-none" th:href="@{/logout}">Logout</a></li>
@@ -27,32 +27,23 @@
 <br>
 <br>
 <div class="container">
-    <p th:if="${#lists.isEmpty(doctors)}" style="color:gray;">
-        No doctors created yet.
+    <p th:if="${#lists.isEmpty(receptions)}" style="color:gray;">
+        No receptionist created yet.
     </p>
     <table class="table">
         <thead>
-            <tr>
-                <th scope="col">Full Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Specialization</th>
-                <th scope="col">Appointments</th>
-                <th scope="col">Action</th>
-            </tr>
+        <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Action</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="doctor : ${doctors}">
-                <td th:text="${doctor.fullName}"></td>
-                <td th:text="${doctor.user.email}"></td>
-                <td th:text="${doctor.specialization}"></td>
+            <tr th:each="reception : ${receptions}">
+                <td th:text="${reception.fullName}"></td>
+                <td th:text="${reception.user.email}"></td>
                 <td>
-                    <a th:href="@{/admin/doctors/{id}/appointments(id=${doctor.id})}"
-                       class="btn btn-sm btn-primary">
-                        View Appointments
-                    </a>
-                </td>
-                <td>
-                    <form th:action="@{/admin/doctors/delete/{id}(id=${doctor.id})}" method="POST" class="delete-form">
+                    <form th:action="@{/admin/receptionist/delete/{id}(id=${reception.id})}" method="POST" class="delete-form">
                         <input type="hidden" name="_method" value="delete"/>
                         <button type="submit" class="btn btn-danger btn-sm">
                             Delete
@@ -65,7 +56,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     document.querySelectorAll(".delete-form").forEach(form => {
         form.addEventListener("submit", function(event) {

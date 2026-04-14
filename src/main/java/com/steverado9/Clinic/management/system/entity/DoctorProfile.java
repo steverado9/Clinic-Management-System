@@ -2,6 +2,8 @@ package com.steverado9.Clinic.management.system.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class DoctorProfile {
 
@@ -18,6 +20,9 @@ public class DoctorProfile {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
 
     public DoctorProfile() {}
 

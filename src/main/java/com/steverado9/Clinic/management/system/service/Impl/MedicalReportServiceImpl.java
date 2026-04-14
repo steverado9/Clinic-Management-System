@@ -32,4 +32,9 @@ public class MedicalReportServiceImpl implements MedicalReportService {
         return medicalReportRespository.findById(reportId)
                 .orElseThrow(() -> new RuntimeException("Report not found"));
     }
+
+    @Override
+    public List<MedicalReport> getMedicalReportByPatientId(Long patientId) {
+        return medicalReportRespository.findByPatientId(patientId);
+    }
 }

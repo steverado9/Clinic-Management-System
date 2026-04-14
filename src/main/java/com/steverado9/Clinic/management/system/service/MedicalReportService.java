@@ -12,4 +12,6 @@ public interface MedicalReportService {
     List<MedicalReport> findByPatient(PatientProfile patient);
 
     MedicalReport findById(Long reportId);
+
+    List<MedicalReport> getMedicalReportByPatientId(Long patientId);
 }

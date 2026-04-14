@@ -5,6 +5,9 @@ import com.steverado9.Clinic.management.system.repository.PatientRepository;
 import com.steverado9.Clinic.management.system.service.PatientService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PatientServiceImpl implements PatientService {
 
@@ -22,5 +25,20 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientProfile findByEmail(String email) {
         return patientRepository.findByEmail(email);
+    }
+
+    @Override
+    public PatientProfile findById(Long patientId) {
+        return patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
+    }
+
+    @Override
+    public void deleteByPatientId(Long id) {
+        patientRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PatientProfile> getAllPatients() {
+        return patientRepository.findAll();
     }
 }
