@@ -21,4 +21,5 @@ public interface AppointmentService {
 
     Appointment findById(Long appointmentId);
 
+    void deleteById(Long id);
 }

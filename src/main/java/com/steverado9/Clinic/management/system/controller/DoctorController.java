@@ -39,7 +39,7 @@ public class DoctorController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "doctor/dashboard";
+        return "/dashboard";
     }
 
     @GetMapping("/appointments")

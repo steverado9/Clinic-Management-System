@@ -29,10 +29,6 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-  web:
-    resources:
-      add-mappings: false
-
 server:
   port: 9090
 

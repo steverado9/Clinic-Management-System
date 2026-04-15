@@ -3,6 +3,8 @@ package com.steverado9.Clinic.management.system.entity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class PatientProfile {
 
@@ -24,6 +26,12 @@ public class PatientProfile {
 
     @Column(nullable = false)
     private boolean enable = false;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<MedicalReport> medicalReports;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Appointment> appointments;
 
     public PatientProfile() {}
 
@@ -81,5 +89,13 @@ public class PatientProfile {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public List<MedicalReport> getMedicalReports() {
+        return medicalReports;
+    }
+
+    public void setMedicalReports(List<MedicalReport> medicalReports) {
+        this.medicalReports = medicalReports;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
@@ -73,16 +73,22 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <!-- ADMIN -->
-    <h4 class="p-3">Good day User</h4><hr>
-    <a th:href="@{/admin/create_user}">Register User</a>
-    <a th:href="@{/admin/doctors}">View Doctors and Appointments</a>
-    <a th:href="@{/admin/receptionist}">View Receptionist</a>
-    <a th:href="@{/admin/patients}">View Patients And Records</a>
-    <a th:href="@{/logout}">Sign Out</a>
+    <h4 class="p-3">Welcome</h4><hr>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/create_user}">Register User</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/doctors}">View Doctors and Appointments</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/receptionist}">View Receptionist</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/patients}">View Patients And Records</a>
     <!-- Doctor -->
+    <a sec:authorize="hasRole('DOCTOR')" th:href="@{/doctor/appointments}">View Appointments</a>
     <!-- Receptionist -->
+    <a sec:authorize="hasRole('RECEPTIONIST')" th:href="@{/reception/register_patient}">Register Patient</a>
+    <a sec:authorize="hasRole('RECEPTIONIST')" th:href="@{/reception/appointments}">All Appointments</a>
     <!-- Patients -->
+    <a sec:authorize="hasRole('PATIENT')" th:href="@{/patient/book}">Book An Appointment</a>
+    <a sec:authorize="hasRole('PATIENT')" th:href="@{/patient/appointments}">My Appointments</a>
+    <a sec:authorize="hasRole('PATIENT')" th:href="@{/patient/reports}">My Reports</a>
 
+    <a th:href="@{/logout}">Sign Out</a>
 </div>
 
 <!-- Content -->
@@ -102,10 +108,10 @@
                 <img th:src="@{/images/img1.png}" class="d-block w-100" alt="hospital">
             </div>
             <div class="carousel-item">
-                <img th:src="@{/images/img2.png}" class="d-block w-100" alt="hospital">
+                <img th:src="@{/images/img3.png}" class="d-block w-100" alt="hospital">
             </div>
             <div class="carousel-item">
-                <img th:src="@{/images/img3.png}" class="d-block w-100" alt="hospital">
+                <img th:src="@{/images/img2.png}" class="d-block w-100" alt="hospital">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">

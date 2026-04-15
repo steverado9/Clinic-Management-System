@@ -5,6 +5,7 @@ import com.steverado9.Clinic.management.system.entity.*;
 import com.steverado9.Clinic.management.system.enums.Role;
 import com.steverado9.Clinic.management.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -148,13 +149,13 @@ public class AdminController {
 
         model.addAttribute("patient", patient);
         model.addAttribute("reports", reports);
-        return "admin/records";
+        return "admin/reports";
     }
 
     @DeleteMapping("patients/delete/{id}")
     public String deletePatient(@PathVariable Long id) {
         patientService.deleteByPatientId(id);
-        return "redirect:/admin/dasnboard";
+        return "redirect:/admin/dashboard";
     }
 
 

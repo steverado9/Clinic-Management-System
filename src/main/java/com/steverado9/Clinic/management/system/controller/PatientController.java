@@ -43,11 +43,11 @@ public class PatientController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "patient/dashboard";
+        return "/dashboard";
     }
 
     @GetMapping("/register")
-    public String ShowRegisterationForm(@RequestParam("token") String token, Model model) {
+    public String ShowRegistrationForm(@RequestParam("token") String token, Model model) {
 
         RegistrationToken regToken = registrationTokenService.findByToken(token);
 
@@ -99,6 +99,9 @@ public class PatientController {
     public String showBookingForm(Model model) {
 
         Appointment appointment = new Appointment();
+        appointment.setDoctor(new DoctorProfile());
+
+
         List<DoctorProfile> doctors = doctorService.getAllDoctors();
 
         model.addAttribute("appointment", appointment);
@@ -107,10 +110,10 @@ public class PatientController {
     }
 
     @PostMapping("/book")
-    public String bookAppointment( @RequestParam("doc.id") Long doctorId, @ModelAttribute Appointment appointment,
+    public String bookAppointment( @ModelAttribute Appointment appointment,
                                    @AuthenticationPrincipal UserDetails userDetails, Model model, @RequestParam("time") String time, @RequestParam("date") String date) {
         try {
-            appointmentService.createAppointment(doctorId, appointment, userDetails, time, date);
+            appointmentService.createAppointment(appointment.getDoctorId(), appointment, userDetails, time, date);
             return "redirect:/patient/appointments?success";
         } catch (RuntimeException e) {
             model.addAttribute("appointment", new Appointment());

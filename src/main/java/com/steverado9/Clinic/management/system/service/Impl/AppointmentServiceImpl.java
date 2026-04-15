@@ -70,7 +70,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getDoctorAppointments(Long doctorId) {
-        return appointmentRepository.findByDoctorId(doctorId);
+        return appointmentRepository.findByDoctor_Id(doctorId);
     }
 
     @Override
@@ -106,5 +106,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment findById(Long appointmentId) {
         return appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found"));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        appointmentRepository.deleteById(id);
     }
 }

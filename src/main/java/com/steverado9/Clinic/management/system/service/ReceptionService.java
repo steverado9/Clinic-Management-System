@@ -1,5 +1,6 @@
 package com.steverado9.Clinic.management.system.service;
 
+import com.steverado9.Clinic.management.system.entity.Appointment;
 import com.steverado9.Clinic.management.system.entity.ReceptionProfile;
 
 import java.util.List;
@@ -10,4 +11,6 @@ public interface ReceptionService {
     List<ReceptionProfile> getAllReceptions();
 
     void deleteByReceptionId(Long id);
+
+    List<Appointment> getAllAppointments();
 }

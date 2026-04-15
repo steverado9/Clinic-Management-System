@@ -29,6 +29,9 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
     private MedicalReport medicalReport;
 
+    @Transient
+    private Long doctorId;
+
     public Appointment() {}
 
     public Appointment(LocalDateTime appointmentDate, Status status, PatientProfile patient, DoctorProfile doctor, MedicalReport medicalReport) {
@@ -89,5 +92,13 @@ public class Appointment {
 
     public void setMedicalReport(MedicalReport medicalReport) {
         this.medicalReport = medicalReport;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 }
