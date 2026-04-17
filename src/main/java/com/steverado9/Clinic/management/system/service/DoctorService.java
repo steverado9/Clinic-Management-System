@@ -5,17 +5,18 @@ import com.steverado9.Clinic.management.system.entity.User;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DoctorService {
     DoctorProfile saveDoctor(DoctorProfile doctor);
 
-    DoctorProfile findByUserId(Long userId);
+    Optional<DoctorProfile> findByUserId(Long userId);
 
     List<DoctorProfile> getAllDoctors();
 
-    DoctorProfile findById(Long id);
+    Optional<DoctorProfile> findById(Long id);
 
-    DoctorProfile findByUserEmail(String email);
+    Optional<DoctorProfile> findByUserEmail(String email);
 
     void deleteByDoctorId(Long id);
 }

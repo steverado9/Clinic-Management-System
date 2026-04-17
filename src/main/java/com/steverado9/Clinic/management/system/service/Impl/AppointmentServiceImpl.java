@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -69,12 +70,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getDoctorAppointments(Long doctorId) {
+    public Optional<List<Appointment>> getDoctorAppointments(Long doctorId) {
         return appointmentRepository.findByDoctor_Id(doctorId);
     }
 
     @Override
-    public List<Appointment> getPatientAppointments(Long patientId) {
+    public Optional<List<Appointment>> getPatientAppointments(Long patientId) {
         return appointmentRepository.findByPatientId(patientId);
     }
 
@@ -92,20 +93,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatientEmail(String email) {
+    public Optional<List<Appointment>> getAppointmentsByPatientEmail(String email) {
 
-        PatientProfile patient = patientRepository.findByEmail(email);
+        Optional<PatientProfile> patient = patientRepository.findByEmail(email);
 
-        if(patient == null) {
-            throw new RuntimeException("patient not found");
-        }
-
-        return appointmentRepository.findByPatientId(patient.getId());
+        return appointmentRepository.findByPatientId(patient.get().getId());
     }
 
     @Override
-    public Appointment findById(Long appointmentId) {
-        return appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found"));
+    public Optional<Appointment> findById(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId);
     }
 
     @Override

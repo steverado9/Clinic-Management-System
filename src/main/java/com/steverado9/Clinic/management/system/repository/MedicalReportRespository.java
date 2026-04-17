@@ -6,11 +6,12 @@ import com.steverado9.Clinic.management.system.entity.PatientProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MedicalReportRespository extends JpaRepository<MedicalReport, Long> {
-    List<MedicalReport> findByPatient(PatientProfile patient);
+    Optional<List<MedicalReport>> findByPatient(PatientProfile patient);
 
     void deleteByDoctorId(Long id);
 
-    List<MedicalReport> findByPatientId(Long patientId);
+    Optional<List<MedicalReport>> findByPatientId(Long patientId);
 }

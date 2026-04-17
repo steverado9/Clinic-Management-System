@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/doctor")
@@ -48,9 +49,9 @@ public class DoctorController {
         User user = userService.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("email not found"));
 
-        DoctorProfile doctor = doctorService.findByUserId(user.getId());
+        Optional<DoctorProfile> doctor = doctorService.findByUserId(user.getId());
 
-        model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.getId()));
+        model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.get().getId()));
 
         return "doctor/appointments";
     }
@@ -69,13 +70,13 @@ public class DoctorController {
 
     @GetMapping("/report/create/{appointmentId}")
     public String ShowCreateReport(@PathVariable Long appointmentId, Model model) {
-        Appointment appointment = appointmentService.findById(appointmentId);
+        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
 
-        if (appointment.getStatus() != Status.APPROVED) {
+        if (appointment.get().getStatus() != Status.APPROVED) {
             throw new RuntimeException("Cannot create report for unapproved appointment");
         }
 
-        if (appointment.getMedicalReport() != null) {
+        if (appointment.get().getMedicalReport() != null) {
             throw new RuntimeException("Report already exists");
         }
 
@@ -88,7 +89,7 @@ public class DoctorController {
     @PostMapping("/report/save/{appointmentId}")
     public String saveReport(@PathVariable Long appointmentId, @ModelAttribute MedicalReport report, Principal principal) {
 
-        Appointment appointment = appointmentService.findById(appointmentId);
+        Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(() ->new RuntimeException("Appointment not found"));
 
         //double-checking
         if (appointment.getStatus() != Status.APPROVED) {
@@ -99,7 +100,7 @@ public class DoctorController {
             throw new RuntimeException("Report already exists");
         }
 
-        DoctorProfile doctor = doctorService.findByUserEmail(principal.getName());
+        DoctorProfile doctor = doctorService.findByUserEmail(principal.getName()).orElseThrow();
 
         report.setAppointment(appointment);
         report.setDoctor(doctor);

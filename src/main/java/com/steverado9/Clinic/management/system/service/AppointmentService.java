@@ -6,20 +6,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AppointmentService {
 
     void createAppointment(Long doctorId, Appointment appointment, UserDetails userDetails, String time, String date);
 
-    List<Appointment> getDoctorAppointments(Long doctorId);
+    Optional<List<Appointment>> getDoctorAppointments(Long doctorId);
 
-    List<Appointment> getPatientAppointments(Long patientId);
+    Optional<List<Appointment>> getPatientAppointments(Long patientId);
 
     void updateStatus(Long id, Status status);
 
-    List<Appointment> getAppointmentsByPatientEmail(String email);
+    Optional<List<Appointment>> getAppointmentsByPatientEmail(String email);
 
-    Appointment findById(Long appointmentId);
+    Optional<Appointment> findById(Long appointmentId);
 
     void deleteById(Long id);
 }

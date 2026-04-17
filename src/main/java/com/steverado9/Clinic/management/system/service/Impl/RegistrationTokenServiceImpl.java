@@ -21,6 +21,6 @@ public class RegistrationTokenServiceImpl implements RegistrationTokenService {
 
     @Override
     public RegistrationToken findByToken(String token) {
-        return registrationTokenRepository.findByToken(token);
+        return registrationTokenRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Token not found"));
     }
 }
