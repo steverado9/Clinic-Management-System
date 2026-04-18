@@ -30,8 +30,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Optional<DoctorProfile> findByUserId(Long userId) {
-        return doctorRepository.findByUserId(userId);
+    public DoctorProfile findByUserId(Long userId) {
+        return doctorRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Doctor not found"));
     }
 
     @Override
@@ -40,13 +40,13 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Optional<DoctorProfile> findById(Long id) {
-        return doctorRepository.findById(id);
+    public DoctorProfile findById(Long id) {
+        return doctorRepository.findById(id).orElseThrow(() -> new RuntimeException("Doctor not found"));
     }
 
     @Override
-    public Optional<DoctorProfile> findByUserEmail(String email) {
-        return doctorRepository.findByUserEmail(email);
+    public DoctorProfile findByUserEmail(String email) {
+        return doctorRepository.findByUserEmail(email).orElseThrow(() -> new RuntimeException("Doctor not found"));
     }
 
     @Transactional

@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MedicalReportRespository extends JpaRepository<MedicalReport, Long> {
-    Optional<List<MedicalReport>> findByPatient(PatientProfile patient);
+    List<MedicalReport> findByPatient(PatientProfile patient);
 
     void deleteByDoctorId(Long id);
 
-    Optional<List<MedicalReport>> findByPatientId(Long patientId);
+    List<MedicalReport> findByPatientId(Long patientId);
 }

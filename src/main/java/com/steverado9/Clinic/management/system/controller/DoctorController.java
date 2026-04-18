@@ -46,12 +46,11 @@ public class DoctorController {
     @GetMapping("/appointments")
     public String viewAppointments(Model  model, @AuthenticationPrincipal UserDetails userDetails) {
 
-        User user = userService.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("email not found"));
+        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("user not found"));
 
-        Optional<DoctorProfile> doctor = doctorService.findByUserId(user.getId());
+        DoctorProfile doctor = doctorService.findByUserId(user.getId());
 
-        model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.get().getId()));
+        model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.getId()));
 
         return "doctor/appointments";
     }
@@ -70,13 +69,13 @@ public class DoctorController {
 
     @GetMapping("/report/create/{appointmentId}")
     public String ShowCreateReport(@PathVariable Long appointmentId, Model model) {
-        Optional<Appointment> appointment = appointmentService.findById(appointmentId);
+        Appointment appointment = appointmentService.findById(appointmentId);
 
-        if (appointment.get().getStatus() != Status.APPROVED) {
+        if (appointment.getStatus() != Status.APPROVED) {
             throw new RuntimeException("Cannot create report for unapproved appointment");
         }
 
-        if (appointment.get().getMedicalReport() != null) {
+        if (appointment.getMedicalReport() != null) {
             throw new RuntimeException("Report already exists");
         }
 
@@ -89,7 +88,7 @@ public class DoctorController {
     @PostMapping("/report/save/{appointmentId}")
     public String saveReport(@PathVariable Long appointmentId, @ModelAttribute MedicalReport report, Principal principal) {
 
-        Appointment appointment = appointmentService.findById(appointmentId).orElseThrow(() ->new RuntimeException("Appointment not found"));
+        Appointment appointment = appointmentService.findById(appointmentId);
 
         //double-checking
         if (appointment.getStatus() != Status.APPROVED) {
@@ -100,7 +99,7 @@ public class DoctorController {
             throw new RuntimeException("Report already exists");
         }
 
-        DoctorProfile doctor = doctorService.findByUserEmail(principal.getName()).orElseThrow();
+        DoctorProfile doctor = doctorService.findByUserEmail(principal.getName());
 
         report.setAppointment(appointment);
         report.setDoctor(doctor);

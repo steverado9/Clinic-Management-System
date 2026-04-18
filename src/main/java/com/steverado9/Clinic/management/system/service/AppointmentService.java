@@ -12,15 +12,15 @@ public interface AppointmentService {
 
     void createAppointment(Long doctorId, Appointment appointment, UserDetails userDetails, String time, String date);
 
-    Optional<List<Appointment>> getDoctorAppointments(Long doctorId);
+    List<Appointment> getDoctorAppointments(Long doctorId);
 
-    Optional<List<Appointment>> getPatientAppointments(Long patientId);
+    List<Appointment> getPatientAppointments(Long patientId);
 
     void updateStatus(Long id, Status status);
 
-    Optional<List<Appointment>> getAppointmentsByPatientEmail(String email);
+    List<Appointment> getAppointmentsByPatientEmail(String email);
 
-    Optional<Appointment> findById(Long appointmentId);
+    Appointment findById(Long appointmentId);
 
     void deleteById(Long id);
 }

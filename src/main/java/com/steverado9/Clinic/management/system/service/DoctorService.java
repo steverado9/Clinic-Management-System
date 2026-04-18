@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface DoctorService {
     DoctorProfile saveDoctor(DoctorProfile doctor);
 
-    Optional<DoctorProfile> findByUserId(Long userId);
+    DoctorProfile findByUserId(Long userId);
 
     List<DoctorProfile> getAllDoctors();
 
-    Optional<DoctorProfile> findById(Long id);
+    DoctorProfile findById(Long id);
 
-    Optional<DoctorProfile> findByUserEmail(String email);
+    DoctorProfile findByUserEmail(String email);
 
     void deleteByDoctorId(Long id);
 }

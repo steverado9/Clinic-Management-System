@@ -24,7 +24,7 @@ public class MedicalReportServiceImpl implements MedicalReportService {
 
     @Override
     public List<MedicalReport> findByPatient(PatientProfile patient) {
-        return medicalReportRespository.findByPatient(patient).orElseThrow(() -> new RuntimeException("Patient has no medical report"));
+        return medicalReportRespository.findByPatient(patient);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class MedicalReportServiceImpl implements MedicalReportService {
 
     @Override
     public List<MedicalReport> getMedicalReportByPatientId(Long patientId) {
-        return medicalReportRespository.findByPatientId(patientId).orElseThrow(() -> new RuntimeException("Medical report not found"));
+        return medicalReportRespository.findByPatientId(patientId);
     }
 }

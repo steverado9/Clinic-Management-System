@@ -46,6 +46,8 @@ public class UserController {
                     return "redirect:/reception/dashboard";
                 } else if (role.getAuthority().equalsIgnoreCase("ROLE_DOCTOR")) {
                     return "redirect:/doctor/dashboard";
+                } else {
+                    return "redirect:/patient/dashboard";
                 }
             }
         }

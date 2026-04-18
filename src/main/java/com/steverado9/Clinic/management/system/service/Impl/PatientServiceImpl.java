@@ -24,7 +24,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientProfile findByEmail(String email) {
-        return patientRepository.findByEmail(email);
+        return patientRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Patient does not exist"));
     }
 
     @Override

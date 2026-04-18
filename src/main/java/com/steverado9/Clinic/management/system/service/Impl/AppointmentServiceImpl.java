@@ -70,18 +70,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Optional<List<Appointment>> getDoctorAppointments(Long doctorId) {
+    public List<Appointment> getDoctorAppointments(Long doctorId) {
         return appointmentRepository.findByDoctor_Id(doctorId);
     }
 
     @Override
-    public Optional<List<Appointment>> getPatientAppointments(Long patientId) {
+    public List<Appointment> getPatientAppointments(Long patientId) {
         return appointmentRepository.findByPatientId(patientId);
     }
 
     @Override
     public void updateStatus(Long id, Status status) {
-        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no appointment"));
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("No Appointment Found"));
         appointment.setStatus(status);
         appointmentRepository.save(appointment);
 
@@ -93,16 +93,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Optional<List<Appointment>> getAppointmentsByPatientEmail(String email) {
+    public List<Appointment> getAppointmentsByPatientEmail(String email) {
 
-        Optional<PatientProfile> patient = patientRepository.findByEmail(email);
+        PatientProfile patient = patientRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Patient not found"));
 
-        return appointmentRepository.findByPatientId(patient.get().getId());
+        return appointmentRepository.findByPatientId(patient.getId());
     }
 
     @Override
-    public Optional<Appointment> findById(Long appointmentId) {
-        return appointmentRepository.findById(appointmentId);
+    public Appointment findById(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId).orElseThrow(() -> new RuntimeException("Appointment not found"));
     }
 
     @Override
