@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface PatientService {
     PatientProfile savePatient(PatientProfile patient);
 
-    PatientProfile findByEmail(String email);
+    Optional<PatientProfile> findByEmail(String email);
 
-    PatientProfile findById(Long patientId);
+    Optional<PatientProfile> findById(Long patientId);
 
     void deleteByPatientId(Long id);
 

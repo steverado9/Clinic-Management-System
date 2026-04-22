@@ -123,6 +123,7 @@
 
             // disable reception fields
             receptionFields.querySelectorAll("input").forEach(i => i.required = false);
+            receptionFields.querySelectorAll("input").forEach(i => i.disabled = true);
 
         } else if (this.value === "RECEPTIONIST") {
             receptionFields.style.display = "block";
@@ -133,6 +134,7 @@
 
             // disable doctor fields
             doctorFields.querySelectorAll("input").forEach(i => i.required = false);
+            doctorFields.querySelectorAll("input").forEach(i => i.disabled = true);
         }
     });
 

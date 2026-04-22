@@ -45,14 +45,18 @@ public class DoctorController {
 
     @GetMapping("/appointments")
     public String viewAppointments(Model  model, @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("user not found"));
 
-        User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("user not found"));
+            DoctorProfile doctor = doctorService.findByUserId(user.getId());
 
-        DoctorProfile doctor = doctorService.findByUserId(user.getId());
+            model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.getId()));
 
-        model.addAttribute("appointments", appointmentService.getDoctorAppointments(doctor.getId()));
-
-        return "doctor/appointments";
+            return "doctor/appointments";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "doctor/appointments";
+        }
     }
 
     @PostMapping("/appointments/{id}/approve")

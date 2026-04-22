@@ -143,12 +143,21 @@ public class AdminController {
 
     @GetMapping("/patients/{id}/reports")
     public String getPatientReports(@PathVariable("id") Long patientId, Model model) {
-        PatientProfile patient = patientService.findById(patientId);
-        List<MedicalReport> reports = medicalReportService.getMedicalReportByPatientId(patientId);
+       try {
+           Optional<PatientProfile> patient = patientService.findById(patientId);
+           if (patient.isPresent()) {
+               model.addAttribute("patient", patient);
+           } else {
+               throw new RuntimeException("Patient cannot be found");
+           }
 
-        model.addAttribute("patient", patient);
-        model.addAttribute("reports", reports);
-        return "admin/reports";
+           List<MedicalReport> reports = medicalReportService.getMedicalReportByPatientId(patientId);
+           model.addAttribute("reports", reports);
+           return "admin/reports";
+       } catch (Exception e) {
+           model.addAttribute("error", e.getMessage());
+       }
+       return "admin/reports";
     }
 
     @DeleteMapping("patients/delete/{id}")

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/patient")
@@ -49,50 +50,68 @@ public class PatientController {
     @GetMapping("/register")
     public String ShowRegistrationForm(@RequestParam("token") String token, Model model) {
 
-        RegistrationToken regToken = registrationTokenService.findByToken(token);
+        try {
+            RegistrationToken regToken = registrationTokenService.findByToken(token);
 
-        if(regToken == null) {
-            throw new RuntimeException("Invalid token");
+            if(regToken == null) {
+                throw new RuntimeException("Invalid token");
+            }
+
+            if (regToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("Token expired");
+            }
+
+            model.addAttribute("email", regToken.getEmail());
+            model.addAttribute("token", token);
+
+            return "patient/register";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "patient/register";
         }
-
-        if (regToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Token expired");
-        }
-
-        model.addAttribute("email", regToken.getEmail());
-        model.addAttribute("token", token);
-
-        return "patient/register";
     }
 
     @PostMapping("/register")
-    public String completeRegistration(@RequestParam String token, @RequestParam String fullName, @RequestParam String password, @RequestParam String phoneNumber) {
+    public String completeRegistration(@RequestParam String token, @RequestParam String fullName, @RequestParam String password, @RequestParam String phoneNumber, Model model) {
 
-        RegistrationToken regToken = registrationTokenService.findByToken(token);
+        try {
+            RegistrationToken regToken = registrationTokenService.findByToken(token);
 
-        if(regToken == null) {
+            if (regToken == null) {
                 throw new RuntimeException("Invalid token");
+            }
+
+            Optional<PatientProfile> existingPatient = patientService.findByEmail(regToken.getEmail());
+            if (existingPatient.isEmpty()) {
+
+                PatientProfile patient = new PatientProfile();
+                patient.setEmail(regToken.getEmail());
+                patient.setFullName(fullName);
+                patient.setPassword(passwordEncoder.encode(password));
+                patient.setPhoneNumber(phoneNumber);
+                patient.setEnable(true);
+
+                patientService.savePatient(patient);
+
+                // 🔥 ALSO CREATE USER FOR LOGIN
+                User user = new User();
+                user.setEmail(regToken.getEmail());
+                user.setPassword(passwordEncoder.encode(password));
+                user.setRole(Role.PATIENT);
+                user.setEnabled(true);
+
+                userService.saveUser(user);
+
+                return "redirect:/login";
+            } else {
+                throw new RuntimeException("Token has already been used");
+            }
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
         }
 
-        PatientProfile patient = new PatientProfile();
-        patient.setEmail(regToken.getEmail());
-        patient.setFullName(fullName);
-        patient.setPassword(passwordEncoder.encode(password));
-        patient.setPhoneNumber(phoneNumber);
-        patient.setEnable(true);
-
-        patientService.savePatient(patient);
-
-        // 🔥 ALSO CREATE USER FOR LOGIN
-        User user = new User();
-        user.setEmail(regToken.getEmail());
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(Role.PATIENT);
-        user.setEnabled(true);
-
-        userService.saveUser(user);
-
-        return "redirect:/login";
+       return "patient/register";
     }
 
     @GetMapping("/book")
@@ -138,14 +157,19 @@ public class PatientController {
     @GetMapping("/reports")
     public String viewReports(Model model, Principal principal) {
 
-        String email = principal.getName();
+       try {
+           String email = principal.getName();
 
-        PatientProfile patient = patientService.findByEmail(email);
+           PatientProfile patient = patientService.findByEmail(email).orElseThrow(() -> new RuntimeException("Patient not found"));
 
-        List<MedicalReport> reports = medicalReportService.findByPatient(patient);
+           List<MedicalReport> reports = medicalReportService.findByPatient(patient);
 
-        model.addAttribute("reports", reports);
+           model.addAttribute("reports", reports);
 
+           return "patient/reports";
+       } catch (RuntimeException e) {
+           model.addAttribute("error", e.getMessage());
+       }
         return "patient/reports";
     }
 }

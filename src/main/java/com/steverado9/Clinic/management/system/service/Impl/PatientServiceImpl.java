@@ -23,13 +23,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientProfile findByEmail(String email) {
-        return patientRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Patient does not exist"));
+    public Optional<PatientProfile> findByEmail(String email) {
+        return patientRepository.findByEmail(email);
     }
 
     @Override
-    public PatientProfile findById(Long patientId) {
-        return patientRepository.findById(patientId).orElseThrow(() -> new RuntimeException("Patient not found"));
+    public Optional<PatientProfile> findById(Long patientId) {
+        return patientRepository.findById(patientId);
     }
 
     @Override

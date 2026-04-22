@@ -31,6 +31,9 @@
     <p th:if="${#lists.isEmpty(reports)}" style="color:gray;">
         No medical reports yet.
     </p>
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
     <table class="table">
         <thead>
             <tr>

@@ -24,6 +24,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendRegistrationEmail(String toEmail, String token) {
 
         try {
+
             String link = "http://localhost:9090/patient/register?token=" + token;
 
             MimeMessage message = mailSender.createMimeMessage();

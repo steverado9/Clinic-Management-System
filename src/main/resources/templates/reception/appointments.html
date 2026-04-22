@@ -49,12 +49,12 @@
             <td>
                 <div class="d-flex">
                     <!--approve-->
-                    <form class="me-4" th:action="@{/reception/appointments/{id}/approve(id=${app.id})}" method="post">
+                    <form th:if="${app.status.name() == 'PENDING'}" class="me-4" th:action="@{/reception/appointments/{id}/approve(id=${app.id})}" method="post">
                         <button type="submit" class="btn btn-primary">Approve</button>
                     </form>
 
                     <!--Reject-->
-                    <form class="me-4" th:action="@{/reception/appointments/{id}/reject(id=${app.id})}" method="post">
+                    <form th:if="${app.status.name() == 'PENDING'}" class="me-4" th:action="@{/reception/appointments/{id}/reject(id=${app.id})}" method="post">
                         <button type="submit" class="btn btn-danger">Reject</button>
                     </form>
 
@@ -69,5 +69,29 @@
         </tbody>
     </table>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll(".delete-form").forEach(form => {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This action cannot be undone!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

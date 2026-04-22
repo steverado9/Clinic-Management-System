@@ -50,17 +50,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         LocalDateTime dateTime = LocalDateTime.of(localDate, localTime);
         LocalDateTime now = LocalDateTime.now();
 
-        PatientProfile patient = patientService.findByEmail(userDetails.getUsername());
+        if (dateTime.isBefore(now)) {
+            throw new RuntimeException("You cannot book a past time");
+        }
+
+        PatientProfile patient = patientService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("Cannot create appointment for empty patient"));
         DoctorProfile doctor = doctorService.findById(doctorId);
 
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
         appointment.setAppointmentDate(dateTime);
         appointment.setStatus(Status.PENDING);
-
-        if (dateTime.isBefore(now)) {
-            throw new RuntimeException("You cannot book a past time");
-        }
 
         if (appointmentRepository.existsByDoctorAndAppointmentDate(doctor, appointment.getAppointmentDate())) {
             throw new RuntimeException("This time slot is already booked");
@@ -89,6 +89,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         System.out.println("email " + appointment.getPatient().getEmail());
         String patientEmail = appointment.getPatient().getEmail();
 
+        //make async
         emailService.sendAppointmentStatusEmail(patientEmail, status, appointment);
     }
 
